@@ -6,12 +6,15 @@ const productApi=createApi({
     baseQuery:fetchBaseQuery({baseUrl:'https://ecommerce-poly-be.onrender.com/api'}),
     endpoints:(builder)=>({
         getProducts:builder.query({
-            query:({page,raiting,sortPrice,minPrice,maxPrice})=>{
-                return `/products?price[gte]=${minPrice?minPrice:0}&${maxPrice?`price[lte]=${maxPrice}`:''}&sort=${sortPrice?sortPrice:'createAt'}&limit=8&page=${page}&raitings[gte]=${raiting?raiting:0}`
+            query:({page,raiting,sortPrice,minPrice,maxPrice,valueSearch,categoryId})=>{
+                return `/products?price[gte]=${minPrice?minPrice:0}&${maxPrice?`price[lte]=${maxPrice}`:''}&sort=${sortPrice?sortPrice:'createAt'}&limit=8&page=${page}&raitings[gte]=${raiting?raiting:0}&${valueSearch?`search=${valueSearch}`:""}&${categoryId?`categoryId=${categoryId}`:""}`
             }
+        }),
+        getOneProduct:builder.query({
+            query:(id)=>`/products/${id}`
         })
     })
 })
-export const {useGetProductsQuery}=productApi
+export const {useGetProductsQuery,useGetOneProductQuery}=productApi
 
 export default productApi
