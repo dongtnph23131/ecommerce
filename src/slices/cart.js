@@ -37,3 +37,4 @@ const cartSlice = createSlice({
 })
 export const { addItem,removeItem,updateItem } = cartSlice.actions
 export default cartSlice
+//Test hihi
