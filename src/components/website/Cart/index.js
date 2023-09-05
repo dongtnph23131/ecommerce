@@ -5,6 +5,7 @@ import CartItem from './CartItem'
 
 const Cart = ({ onHiddenCart }) => {
     const { items } = useSelector(state => state.cart)
+    const totalCart=items.reduce((accumulator, currentValue) => accumulator + currentValue.price*currentValue.quantity,0);
     return (
         <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
@@ -41,7 +42,7 @@ const Cart = ({ onHiddenCart }) => {
                             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                     <p>Subtotal</p>
-                                    <p>$262.00</p>
+                                    <p>$ {totalCart}</p>
                                 </div>
                                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                                 <div className="mt-6">
