@@ -7,11 +7,12 @@ import AddCategory from "./components/admin/category/add";
 import SignupPage from "./pages/SignupPage";
 import Login from "./pages/Login";
 import ProductDetail from "./pages/ProductDetail";
+import EditCategory from "./components/admin/category/edit";
 
 const routers = createBrowserRouter([
     { path: '', element: <HomePage /> },
     {
-        path:'/products/:id',element:<ProductDetail></ProductDetail>
+        path: '/products/:id', element: <ProductDetail></ProductDetail>
     },
     {
         path: 'admin', element: <LayoutAdmin />, children: [
@@ -20,16 +21,17 @@ const routers = createBrowserRouter([
             {
                 path: 'categories', children: [
                     { index: true, element: <ListCategory /> },
-                    { path: 'add', element: <AddCategory /> }
+                    { path: 'add', element: <AddCategory /> },
+                    { path: 'edit/:id', element: <EditCategory /> }
                 ]
             }
         ]
     },
     {
-        path:'signup',element:<SignupPage/>
+        path: 'signup', element: <SignupPage />
     },
     {
-        path:'login',element:<Login/>
+        path: 'login', element: <Login />
     }
 ])
 export default routers

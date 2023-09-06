@@ -59,7 +59,7 @@ const ProductList = ({valueSearch}) => {
           <div className="relative inline-block text-left">
             <div>
               Sort Price: <select onChange={onChangeSortPrice} className="py-1" role="none">
-                <option value={'createAt'} className="font-medium text-gray-900 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Default</option>
+                <option value={'createdAt'} className="font-medium text-gray-900 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-0">Default</option>
                 <option value={'price'} className="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-3">Low to High</option>
                 <option value={'-price'} className="text-gray-500 block px-4 py-2 text-sm" role="menuitem" tabIndex="-1" id="menu-item-4">High to Low</option>
               </select>

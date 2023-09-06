@@ -1,12 +1,11 @@
 import { Button, InputNumber, message } from 'antd';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux';
 import { addItem, removeItem, updateItem } from '../../../slices/cart';
 
 const CartItem = ({ item }) => {
     const dispatch = useDispatch()
     const onChangeQuantity = (value) => {
-        console.log(String(value));
         if(value==null){
             return
         }

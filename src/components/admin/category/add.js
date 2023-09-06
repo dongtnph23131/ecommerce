@@ -6,15 +6,17 @@ import { useNavigate } from 'react-router-dom'
 const AddCategory = () => {
     const naigate = useNavigate()
     const [addCategory, { isLoading }] = useAddCategoryMutation()
-    const onFinish = (value) => {
-        addCategory(value).unwrap().then(() => {
+    const onFinish = async (value) => {
+        const data = await addCategory(value)
+        if (data.data.data) {
             message.success('Thêm danh mục sản phẩm thành công');
-                setTimeout(() => {
-                    naigate("/admin/categories")
-                }, 1000)
-        }).catch((error) => {
-            message.error('Thêm sản phẩm thất bại')
-        })
+            setTimeout(() => {
+                naigate("/admin/categories")
+            }, 1000)
+        }
+        else {
+            message.error(data.data.message);
+        }
     }
     return (
         <>

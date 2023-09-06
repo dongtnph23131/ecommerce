@@ -126,8 +126,8 @@ const ProductDetail = () => {
                                 <h2 className="sr-only">Product information</h2>
                                 <p className="text-3xl mt-6 tracking-tight text-gray-900">$ {data?.data?.price}</p>
                                 <div className='flex mt-6'>
-                                    <Rate value={4} />
-                                    <p href="#" className="ml-5 mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500">117 reviews</p>
+                                    <Rate value={data?.data?.raitings} />
+                                    <p href="#" className="ml-5 mt-2 text-sm font-medium text-indigo-600 hover:text-indigo-500">{data?.data?.numOfReviews} reviews</p>
                                 </div>
                                 <div className='mt-6'>
                                     <h3 className="sr-only">Description</h3>
