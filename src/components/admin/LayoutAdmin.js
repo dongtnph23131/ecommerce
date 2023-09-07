@@ -35,6 +35,11 @@ const LayoutAdmin = () => {
                             icon: <BiLogoProductHunt />,
                             label: <Link to="/admin/categories">Danh mục sản phẩm</Link>,
                         },
+                        {
+                            key: "3",
+                            icon: <BiLogoProductHunt />,
+                            label: <Link to="/admin/products">Sản phẩm</Link>,
+                        },
                     ]}
                 />
             </Sider>

@@ -8,6 +8,7 @@ import SignupPage from "./pages/SignupPage";
 import Login from "./pages/Login";
 import ProductDetail from "./pages/ProductDetail";
 import EditCategory from "./components/admin/category/edit";
+import ProductListAdmin from "./components/admin/product";
 
 const routers = createBrowserRouter([
     { path: '', element: <HomePage /> },
@@ -24,7 +25,12 @@ const routers = createBrowserRouter([
                     { path: 'add', element: <AddCategory /> },
                     { path: 'edit/:id', element: <EditCategory /> }
                 ]
-            }
+            },
+            {
+                path: 'products', children: [
+                    { index: true, element: <ProductListAdmin /> }
+                ]
+            },
         ]
     },
     {

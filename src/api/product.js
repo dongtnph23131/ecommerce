@@ -7,7 +7,7 @@ const productApi=createApi({
     endpoints:(builder)=>({
         getProducts:builder.query({
             query:({page,raiting,sortPrice,minPrice,maxPrice,valueSearch,categoryId})=>{
-                return `/products?price[gte]=${minPrice?minPrice:0}&${maxPrice?`price[lte]=${maxPrice}`:''}&sort=${sortPrice?sortPrice:'createdAt'}&limit=8&page=${page}&raitings[gte]=${raiting?raiting:0}&${valueSearch?`search=${valueSearch}`:""}&${categoryId?`categoryId=${categoryId}`:""}`
+                return `/products?price[gte]=${minPrice?minPrice:0}&${maxPrice?`price[lte]=${maxPrice}`:''}&sort=${sortPrice?sortPrice:'createdAt'}&limit=4&page=${page}&raitings[gte]=${raiting?raiting:0}&${valueSearch?`search=${valueSearch}`:""}&${categoryId?`categoryId=${categoryId}`:""}`
             }
         }),
         getOneProduct:builder.query({
