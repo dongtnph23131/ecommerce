@@ -26,18 +26,12 @@ const ProductList = ({valueSearch}) => {
   const numberPage=Number(Math.ceil(data?.data.length/4))
   const onNextPage = () => {
     setPage(page + 1)
-    if(page===numberPage){
-      setPage(1)
-    }
   }
   const onChangeCategory=(event)=>{
       setCategoryId(event.target.value)
   }
   const onPrePage = () => {
     setPage(page - 1)
-    if(page===1){
-      setPage(numberPage)
-    }
   }
 
   const onChangeSortPrice = (event) => {
