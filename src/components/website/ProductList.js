@@ -1,6 +1,6 @@
 import { Button } from 'antd'
 import React, { useState } from 'react'
-import { useGetProductsQuery } from '../../api/product'
+import { useGetProductsAdminQuery, useGetProductsQuery } from '../../api/product'
 import Skeleton from 'react-loading-skeleton'
 import InputCategory from './Input/InputCategory'
 import InputPrice from './Input/InputPrice'
@@ -10,8 +10,8 @@ import { useDispatch } from 'react-redux'
 import { addItem } from '../../slices/cart'
 import { NavLink } from 'react-router-dom'
 
-const ProductList = ({valueSearch}) => {
-  const dispatch=useDispatch()
+const ProductList = ({ valueSearch }) => {
+  const dispatch = useDispatch()
   const [isCategory, setIsCategory] = useState(false)
   const [isPrice, setIsPrice] = useState(false)
   const [isRaiting, setIsRaiting] = useState(false)
@@ -20,22 +20,33 @@ const ProductList = ({valueSearch}) => {
   const [minPrice, setMinPrice] = useState()
   const [maxPrice, setMaxPrice] = useState()
   const [sortPrice, setSortPrice] = useState()
-  const [categoryId,setCategoryId]=useState()
-  const {data:categories}=useGetCategoriesQuery()
-  const { data, isLoading } = useGetProductsQuery({ page, raiting, sortPrice, minPrice, maxPrice,valueSearch,categoryId })
-  const numberPage=Number(Math.ceil(data?.data.length/4))
+  const [categoryId, setCategoryId] = useState()
+  const { data: categories } = useGetCategoriesQuery()
+  const { data, isLoading } = useGetProductsQuery({ page, raiting, sortPrice, minPrice, maxPrice, valueSearch, categoryId })
+  const { data: products } = useGetProductsAdminQuery({ raiting, sortPrice, minPrice, maxPrice, valueSearch, categoryId })
+  const numberPage = Number(Math.ceil(products?.data.length / 4))
   const onNextPage = () => {
+    if(page===numberPage){
+       setPage(1)
+       return;
+    }
     setPage(page + 1)
+    
   }
-  const onChangeCategory=(event)=>{
-      setCategoryId(event.target.value)
+  const onChangeCategory = (event) => {
+    setCategoryId(event.target.value)
   }
   const onPrePage = () => {
+    if(page===1){
+       setPage(numberPage)
+       return
+    }
     setPage(page - 1)
   }
 
   const onChangeSortPrice = (event) => {
     event.preventDefault()
+    setPage(1)
     setSortPrice(event.target.value)
   }
   const onInputPriceChange = (event) => {
@@ -44,6 +55,9 @@ const ProductList = ({valueSearch}) => {
   }
   const onInputRaitingChange = (event) => {
     setRaiting(event.target.value)
+  }
+  const pageOne=()=>{
+    setPage(1)
   }
   return (
     <>{isLoading ? <Skeleton className='mt-5' count={5} /> : <div className='bg-white mx-5 my-5'>
@@ -89,7 +103,7 @@ const ProductList = ({valueSearch}) => {
                 </span>
               </button>
             </h3>
-            {isCategory ? <InputCategory onChangeCategory={onChangeCategory} data={categories} /> : ""}
+            {isCategory ? <InputCategory pageOne={pageOne} onChangeCategory={onChangeCategory} data={categories} /> : ""}
           </div>
           <div className="border-t border-gray-200 px-4 py-6">
             <h3 className="-mx-2 -my-3 flow-root">
@@ -105,7 +119,7 @@ const ProductList = ({valueSearch}) => {
               </button>
             </h3>
             <div className="pt-6" id="filter-section-mobile-0">
-              {isPrice ? <InputPrice onInputPriceChange={onInputPriceChange} /> : ""}
+              {isPrice ? <InputPrice pageOne={pageOne} onInputPriceChange={onInputPriceChange} /> : ""}
             </div>
           </div>
           <div className="border-t border-gray-200 px-4 py-6">
@@ -122,7 +136,7 @@ const ProductList = ({valueSearch}) => {
               </button>
             </h3>
             <div className="pt-6" id="filter-section-mobile-0">
-              {isRaiting ? <InputRaiting onInputRaitingChange={onInputRaitingChange} /> : ""}
+              {isRaiting ? <InputRaiting pageOne={pageOne} onInputRaitingChange={onInputRaitingChange} /> : ""}
             </div>
           </div>
         </div>
@@ -133,13 +147,13 @@ const ProductList = ({valueSearch}) => {
                 <div className=" relative aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
                   <img src={item.images[0].url} alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." className="h-[300px] w-full object-cover object-center group-hover:opacity-75" />
                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
-                   <NavLink to={`/products/${item._id}`}> <button className="text-white text-lg w-9 h-8 rounded-full bg-red-400 flex items-center justify-center hover:bg-gray-800 transition"><i className="fas fa-eye" /></button></NavLink>
+                    <NavLink to={`/products/${item._id}`}> <button className="text-white text-lg w-9 h-8 rounded-full bg-red-400 flex items-center justify-center hover:bg-gray-800 transition"><i className="fas fa-eye" /></button></NavLink>
                   </div>
                 </div>
                 <div className='flex'>
                   <h3 className="mt-4 text-sm text-gray-700">{item.name}</h3>
-                  <Button className='mt-4 ml-[30px] border border-red-400' onClick={()=>{
-                      dispatch(addItem({...item,quantity:1}))
+                  <Button className='mt-4 ml-[30px] border border-red-400' onClick={() => {
+                    dispatch(addItem({ ...item, quantity: 1 }))
                   }}>Add to cart</Button>
                 </div>
                 <p className="mt-1 text-lg font-medium text-gray-900">${item.price}</p>
