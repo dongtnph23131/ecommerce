@@ -23,7 +23,7 @@ const ProductList = ({valueSearch}) => {
   const [categoryId,setCategoryId]=useState()
   const {data:categories}=useGetCategoriesQuery()
   const { data, isLoading } = useGetProductsQuery({ page, raiting, sortPrice, minPrice, maxPrice,valueSearch,categoryId })
-  const numberPage=Number(Math.ceil(data?.data.length/8))
+  const numberPage=Number(Math.ceil(data?.data.length/4))
   const onNextPage = () => {
     setPage(page + 1)
     if(page===numberPage){
