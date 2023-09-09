@@ -55,6 +55,7 @@ const CheckoutCartPage = () => {
                 Authorization: `Bearer ${token}`
             }
         })
+        //
         const dataOrder = await createOrder(order)
         if (dataOrder?.data?.data) {
             dispatch(clearCart())
