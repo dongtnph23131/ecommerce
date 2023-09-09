@@ -32,8 +32,14 @@ const cartSlice = createSlice({
                 const updateItem = { ...item, quantity: action.payload.quantity }
                 state.items = state.items.map((item) => item._id === action.payload._id ? updateItem : item)
             }
+        },
+        remove:(state,action)=>{
+            state.items=state.items.filter(item=>item._id!==action.payload._id)
+        },
+        clearCart:(state)=>{
+            state.items=[]
         }
     }
 })
-export const { addItem,removeItem,updateItem } = cartSlice.actions
+export const { addItem,removeItem,updateItem,remove,clearCart } = cartSlice.actions
 export default cartSlice

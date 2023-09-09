@@ -1,12 +1,12 @@
 import { Button, InputNumber, message } from 'antd';
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { addItem, removeItem, updateItem } from '../../../slices/cart';
+import { addItem, remove, removeItem, updateItem } from '../../../slices/cart';
 
 const CartItem = ({ item }) => {
     const dispatch = useDispatch()
     const onChangeQuantity = (value) => {
-        if(value==null){
+        if (value == null) {
             return
         }
         if (String(value).startsWith('-')) {
@@ -38,13 +38,28 @@ const CartItem = ({ item }) => {
                 </div>
                 <div className="flex flex-1 items-end justify-between text-sm">
                     <div className='flex'>
-                        <Button onClick={() => dispatch(removeItem(item))}>-</Button>
+                        <Button onClick={() => {
+                            if (item.quantity === 1) {
+                                const confirm = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này trong giỏ hàng không?')
+                                if (confirm) {
+                                    dispatch(removeItem(item))
+                                }
+                            }
+                            else {
+                                dispatch(removeItem(item))
+                            }
+                        }}>-</Button>
                         <InputNumber onChange={onChangeQuantity} value={item.quantity} className='w-[70px] pl-2' />
                         <Button onClick={() => dispatch(addItem(item))}>+</Button>
                     </div>
 
                     <div className="flex">
-                        <button type="button"
+                        <button onClick={() => {
+                            const confirm = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này trong giỏ hàng không?')
+                            if (confirm) {
+                                dispatch(remove(item))
+                            }
+                        }} type="button"
                             className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
                     </div>
                 </div>

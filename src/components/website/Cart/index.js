@@ -2,8 +2,10 @@ import { Button, Input, InputNumber } from 'antd'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import CartItem from './CartItem'
+import { useNavigate } from 'react-router-dom'
 
 const Cart = ({ onHiddenCart }) => {
+    const navigate=useNavigate()
     const { items } = useSelector(state => state.cart)
     const totalCart=items.reduce((accumulator, currentValue) => accumulator + currentValue.price*currentValue.quantity,0);
     return (
@@ -30,11 +32,11 @@ const Cart = ({ onHiddenCart }) => {
 
                                 <div className="mt-8">
                                     <div className="flow-root">
-                                        <ul role="list" className="-my-6 divide-y divide-gray-200">
+                                        {items.length>0?<ul role="list" className="-my-6 divide-y divide-gray-200">
                                             {items?.map((item,index) => {
                                                 return <CartItem key={index} item={item}/>
                                             })}
-                                        </ul>
+                                        </ul>:<h1 className='text-lg'>Giỏ hàng trống</h1>}
                                     </div>
                                 </div>
                             </div>
@@ -46,13 +48,22 @@ const Cart = ({ onHiddenCart }) => {
                                 </div>
                                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                                 <div className="mt-6">
-                                    <a href="#"
+                                    <a
+                                    onClick={()=>{
+                                         if(items.length===0){
+                                            alert('Không có sản phẩm nào trong giỏ hàng')
+                                            return
+                                         }
+                                         else{
+                                            navigate('/checkout/cart')
+                                         }
+                                    }}
                                         className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
                                 </div>
                                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                     <p>
                                         or
-                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                        <button onClick={onHiddenCart} type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
                                             Continue Shopping
                                             <span aria-hidden="true"> &rarr;</span>
                                         </button>

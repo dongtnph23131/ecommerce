@@ -11,6 +11,8 @@ import EditCategory from "./components/admin/category/edit";
 import ProductListAdmin from "./components/admin/product";
 import AddProduct from "./components/admin/product/add";
 import EditProduct from "./components/admin/product/edit";
+import CheckoutCartPage from "./pages/checkout";
+import OrderListAdmin from "./components/admin/order";
 const user = JSON.parse(localStorage.getItem('user'))
 const PrivateRouter = ({ user }) => {
     if(!user){
@@ -46,9 +48,17 @@ const routers = createBrowserRouter([
                             { path: 'edit/:id', element: <EditProduct /> }
                         ]
                     },
+                    {
+                        path:'orders',children:[
+                            {index:true,element:<OrderListAdmin/>}
+                        ]
+                    }
                 ]
             }
         ]
+    },
+    {
+        path:'/checkout/cart',element:<CheckoutCartPage/>
     },
     {
         path: 'signup', element: <SignupPage />

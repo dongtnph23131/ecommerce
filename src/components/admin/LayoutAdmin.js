@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
     AiOutlineMenuFold,
     AiOutlineMenuUnfold,
+    AiOutlineShoppingCart,
     AiOutlineVideoCamera,
 } from "react-icons/ai";
 import { BiSolidDashboard, BiLogoProductHunt } from "react-icons/bi"
@@ -40,6 +41,11 @@ const LayoutAdmin = () => {
                             icon: <BiLogoProductHunt />,
                             label: <Link to="/admin/products">Sản phẩm</Link>,
                         },
+                        {
+                            key:'4',
+                            icon:<AiOutlineShoppingCart/>,
+                            label: <Link to="/admin/orders">Đơn hàng</Link>,
+                        }
                     ]}
                 />
             </Sider>
