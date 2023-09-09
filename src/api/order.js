@@ -36,9 +36,13 @@ const orderApi = createApi({
                 },
             }),
             invalidatesTags:['Order']
+        }),
+        getMyOrder:builder.query({
+            query:(userId)=>`/myOrder/${userId}`,
+            providesTags:['Order']
         })
     })
 })
-export const { useCreateOrderMutation, useGetAllOrderQuery, useGetDetailOrderQuery,useUpdateOrderMutation } = orderApi
+export const { useCreateOrderMutation, useGetAllOrderQuery, useGetDetailOrderQuery,useUpdateOrderMutation,useGetMyOrderQuery } = orderApi
 
 export default orderApi

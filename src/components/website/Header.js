@@ -47,6 +47,8 @@ const Header = ({ onChangeSearch, onShowCart }) => {
                 </div>
                 {isHide && <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1">
                   <button className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-0">Your Profile</button>
+                  {user?<NavLink to={'/myOrder'}><button className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-2">My order</button>
+                  </NavLink>:''}
                   <button onClick={logout} className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-2">Sign out</button>
                 </div>}
               </div> : <><NavLink to={'/login'}><Button>Login</Button></NavLink><NavLink to={'/signup'}><Button className='ml-2'>Register</Button></NavLink></>}

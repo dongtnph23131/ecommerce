@@ -13,13 +13,14 @@ import AddProduct from "./components/admin/product/add";
 import EditProduct from "./components/admin/product/edit";
 import CheckoutCartPage from "./pages/checkout";
 import OrderListAdmin from "./components/admin/order";
+import MyOrder from "./pages/MyOrder";
 const user = JSON.parse(localStorage.getItem('user'))
 const PrivateRouter = ({ user }) => {
-    if(!user){
-        return <Navigate to={'/login'}/>
+    if (!user) {
+        return <Navigate to={'/login'} />
     }
-    if(user.role!=='admin'){
-        return <Navigate to={'/'}/>
+    if (user.role !== 'admin') {
+        return <Navigate to={'/'} />
     }
     return <Outlet />
 }
@@ -49,16 +50,17 @@ const routers = createBrowserRouter([
                         ]
                     },
                     {
-                        path:'orders',children:[
-                            {index:true,element:<OrderListAdmin/>}
+                        path: 'orders', children: [
+                            { index: true, element: <OrderListAdmin /> }
                         ]
                     }
                 ]
             }
         ]
     },
+    { path: 'myOrder', element: <MyOrder /> },
     {
-        path:'/checkout/cart',element:<CheckoutCartPage/>
+        path: 'checkout/cart', element: <CheckoutCartPage />
     },
     {
         path: 'signup', element: <SignupPage />

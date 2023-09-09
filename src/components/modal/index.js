@@ -39,7 +39,8 @@ const Modal = ({ hiddenModal, orderDetailId }) => {
                         <h2 className='mt-2'>Đia chỉ nhận hàng : {data?.data?.address}</h2>
                         <h2 className='mt-2'>Số điện thoại nhận hàng : {data?.data?.phone}</h2>
                         <h2 className='mt-2'>Tên người nhận : {data?.data?.userNameReceive
-}</h2>
+                        }</h2>
+                        <h2 className='mt-2'>Ghi chú: {data?.data?.node}</h2>
                     </>}
                 </div>
             </div>
