@@ -1,18 +1,19 @@
 import { Table } from 'antd';
 import React, { useState } from 'react'
 import { useGetOneProductQuery } from '../../api/product';
+import Skeleton from 'react-loading-skeleton';
 
-const ModalViewComment = ({ hiddenViewComment,dataViewComment }) => {
-    const {data}=useGetOneProductQuery(dataViewComment.key)
+const ModalViewComment = ({ hiddenViewComment, dataViewComment }) => {
+    const { data,isLoading } = useGetOneProductQuery(dataViewComment.key)
 
-    const dataSource = data?.data?.reviews.map((item,index)=>{
+    const dataSource = data?.data?.reviews.map((item, index) => {
         return {
             key: index,
-            userId:item.userId,
+            userId: item.userId,
             name: item.name,
-            avatar:item.avatar,
-            rating:item.rating,
-            comment:item.comment
+            avatar: item.avatar,
+            rating: item.rating,
+            comment: item.comment
         }
     })
 
@@ -31,6 +32,9 @@ const ModalViewComment = ({ hiddenViewComment,dataViewComment }) => {
             title: 'AvatarUser',
             dataIndex: 'avatar',
             key: 'avatar',
+            render: (item) => {
+                return <img className='w-[80px]' src={item}></img>
+            }
         },
         {
             title: 'Rating',
@@ -53,7 +57,7 @@ const ModalViewComment = ({ hiddenViewComment,dataViewComment }) => {
                     </button>
                 </div>
                 <div className="py-10 h-900 bg-gray-100 flex justify-between">
-                    <Table className='w-full mx-5 my-5' dataSource={dataSource} columns={columns} />
+                  {isLoading?<Skeleton count={5}/>: <Table className='w-full mx-5 my-5' dataSource={dataSource} columns={columns} />}
                 </div>
             </div>
         </div>
