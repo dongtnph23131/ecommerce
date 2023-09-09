@@ -11,6 +11,7 @@ import { GoSync } from 'react-icons/go'
 import { clearCart } from '../slices/cart'
 import axios from 'axios'
 import { loadStripe } from '@stripe/stripe-js'
+import Cart from '../components/website/Cart'
 const token = JSON.parse(localStorage.getItem('token'))
 const CheckoutCartPage = () => {
     const stripePromise = loadStripe('pk_test_51NhcV4BTIfNMcVjXjMESMmQhCf2RhFgQ0Ty1jzFU9d11AbFWtF62jnDvc1GiGclfk790xYvUxvNCfjJtmH4OVExy00lacgrP5h')
@@ -97,9 +98,16 @@ const CheckoutCartPage = () => {
             })
         }
     }
+    const [isShowCart,setIsShowCart]=useState(false)
+    const onShowCart=()=>{
+        setIsShowCart(true)
+      }
+      const onHiddenCart=()=>{
+        setIsShowCart(false)
+      }
     return (
         <>
-            <Header />
+            <Header onShowCart={onShowCart}/>
             <Form onFinish={onFinish}>
                 <div className='grid grid-cols-2 gap-10 mx-10 my-10'>
                     <div className='mr-[50px]'>
@@ -156,6 +164,7 @@ const CheckoutCartPage = () => {
                 </div>
             </Form>
             <Footer />
+            {isShowCart && <Cart onHiddenCart={onHiddenCart}/>}
         </>
     )
 }

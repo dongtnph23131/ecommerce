@@ -53,7 +53,18 @@ const productApi=createApi({
             }),
             invalidatesTags:['Product']
         }),
+        commentProduct:builder.mutation({
+            query:({id,comment})=>({
+                url:`/comments/${id}`,
+                body:comment,
+                method:'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+            invalidatesTags:['Product']
+        }),
     })
 })
-export const {useGetProductsQuery,useGetOneProductQuery,useGetProductsAdminQuery,useAddProductMutation,useRemoveProductMutation,useUpdateProductMutation}=productApi
+export const {useGetProductsQuery,useGetOneProductQuery,useGetProductsAdminQuery,useAddProductMutation,useRemoveProductMutation,useUpdateProductMutation,useCommentProductMutation}=productApi
 export default productApi

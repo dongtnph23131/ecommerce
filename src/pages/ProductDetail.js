@@ -1,17 +1,66 @@
 import React, { useState } from 'react'
 import Footer from '../components/website/Footer'
 import Header from '../components/website/Header'
-import { Rate } from "antd"
-import { useGetOneProductQuery } from '../api/product'
+import { Button, Modal, Pagination, Rate } from "antd"
+import { useCommentProductMutation, useGetOneProductQuery } from '../api/product'
 import { useParams } from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton'
+import Cart from '../components/website/Cart'
+import Swal from 'sweetalert2'
+
+const token = JSON.parse(localStorage.getItem('token'))
 const ProductDetail = () => {
     const { id } = useParams()
+    const [raiting, setRaiting] = useState(0)
+    const [commentTitle, setCommentTitle] = useState('')
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [page,setPage]=useState(1)
+    const [commentProduct,{isLoadingComment}]=useCommentProductMutation()
+    const onChange = (event) => {
+        setCommentTitle(event.target.value)
+    }
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = async () => {
+        if(commentTitle===""){
+            return
+        }
+        const comment={rating:raiting,comment:commentTitle}
+        const data=await commentProduct({id,comment})
+        if(data?.data?.data){
+            Swal.fire(
+                'Good job!',
+                'Comment thành công',
+                'success'
+            )
+            setIsModalOpen(false)
+            return
+        }
+        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Chưa đăng nhập'
+            })
+            setIsModalOpen(false)
+        }
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     const { data, isLoading } = useGetOneProductQuery(id)
     const [numberImg, setNumberImage] = useState(0)
+    const [isShowCart, setIsShowCart] = useState(false)
+    const onShowCart = () => {
+        setIsShowCart(true)
+    }
+    const onHiddenCart = () => {
+        setIsShowCart(false)
+    }
+
     return (
         <>
-            <Header />
+            <Header onShowCart={onShowCart} />
             {isLoading ? <Skeleton count={5} /> : <div className="bg-white">
                 <div className="pt-6">
                     <nav aria-label="Breadcrumb">
@@ -67,11 +116,11 @@ const ProductDetail = () => {
                                 </div>
                             </div>
                             <button
-                                onClick={()=>{
-                                  setNumberImage(numberImg-1)
-                                  if(numberImg===0){
-                                    setNumberImage(data?.data?.images.length-1)
-                                  }
+                                onClick={() => {
+                                    setNumberImage(numberImg - 1)
+                                    if (numberImg === 0) {
+                                        setNumberImage(data?.data?.images.length - 1)
+                                    }
                                 }}
                                 className="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-indigo-600 opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-indigo-600 hover:no-underline hover:opacity-90 hover:outline-none focus:text-indigo-600 focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
                                 type="button"
@@ -93,12 +142,12 @@ const ProductDetail = () => {
                                 </span>
                             </button>
                             <button
-                                onClick={()=>{
-                                    setNumberImage(numberImg+1)
-                                    if(numberImg>data?.data?.images.length-2){
+                                onClick={() => {
+                                    setNumberImage(numberImg + 1)
+                                    if (numberImg > data?.data?.images.length - 2) {
                                         setNumberImage(0)
                                     }
-                                    
+
                                 }}
                                 className="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-indigo-600 opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-indigo-600 hover:no-underline hover:opacity-90 hover:outline-none focus:text-indigo-600 focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
                                 type="button"
@@ -141,7 +190,34 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>}
+            <h2 className="mt-5 ml-20 text-lg">Reviews</h2>
+            <Button className='bg-blue-400 ml-20 mt-5' onClick={showModal}>
+                Comment
+            </Button>
+            <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Rate onChange={setRaiting} value={raiting} />
+                <br />
+                <textarea onChange={onChange}  className="shadow appearance-none border rounded w-8/12 py-2 px-3 text-gray-700 mt-3" />
+            </Modal>
+            <div className="flex mb-10">
+                <div className="bg-white shadow rounded overflow-hidden group flex">
+                    {data?.data?.reviews.length == 0 && <p className='mt-5 ml-[100px]'>No comment</p>}
+                    {data?.data?.reviews.length > 0 && data?.data?.reviews.slice((page - 1) * 4, (page - 1) * 4 + 4).map((item) => (
+                        <div key={item._id} className="p-10 border border-gray-800 ml-10 mt-5">
+                            <img className="w-20 ml-10 rounded-[20px]" src={item.avatar} />
+                            <h2 className="ml-5">{item.className}</h2>
+                            <Rate disabled defaultValue={item.rating} className='mt-4' />
+                            <p className="text-gray-500 mt-5">{item.comment}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <Pagination className='justify-center items-center flex' onChange={(event)=>{
+                setPage(event);
+            }} defaultCurrent={1} total={data?.data?.reviews.length} pageSize={4}/>
             <Footer />
+            {isShowCart && <Cart onHiddenCart={onHiddenCart} />}
+
         </>
     )
 }

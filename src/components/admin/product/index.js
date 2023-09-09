@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useGetProductsAdminQuery, useRemoveProductMutation } from '../../../api/product'
 import { Button, Table, message } from 'antd'
 import { NavLink } from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton'
 import { useGetCategoriesQuery } from '../../../api/category'
 import { GoSync } from 'react-icons/go'
-
+import {FaCommentAlt} from "react-icons/fa"
+import ModalViewComment from '../../modal/ModalViewComment'
 const ProductListAdmin = () => {
+    const [isViewComment,setIsViewComment]=useState(false)
+    const [dataViewComment,setDataViewComment]=useState({})
     const { data: categories } = useGetCategoriesQuery()
     const { data, isLoading } = useGetProductsAdminQuery({})
     const [removeProduct, { isLoadingRemove }] = useRemoveProductMutation()
@@ -27,6 +30,9 @@ const ProductListAdmin = () => {
             }).name
         }
     ))
+    const hiddenViewComment=()=>{
+        setIsViewComment(false)
+    }
     const columns = [
         {
             title: 'Tên sản phẩm',
@@ -60,6 +66,12 @@ const ProductListAdmin = () => {
             title: 'Số lượng bình luận',
             dataIndex: 'numOfReviews',
             key: 'numOfReviews',
+            render:(item,dataItem)=>{
+                return <button onClick={()=>{
+                    setIsViewComment(true)
+                    setDataViewComment(dataItem)
+                }} className='flex'>{item} <FaCommentAlt className='mt-1 ml-1'/></button>
+            }
         },
         {
             title: 'Raitings',
@@ -97,6 +109,7 @@ const ProductListAdmin = () => {
                 <NavLink to={'/admin/products/add'}><Button>Thêm mới sản phẩm</Button></NavLink>
             </div>
             {isLoading ? <Skeleton className='mt-5' count={5} /> : <Table className='mt-10' dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />}
+            {isViewComment?<ModalViewComment dataViewComment={dataViewComment} hiddenViewComment={hiddenViewComment}/>:''}
         </>
     )
 }
