@@ -61,6 +61,7 @@ const CheckoutCartPage = () => {
         if (dataOrder?.data?.data) {
             dispatch(clearCart())
         }
+        //
         await stripe.redirectToCheckout({ sessionId: data.id })
         
     }
