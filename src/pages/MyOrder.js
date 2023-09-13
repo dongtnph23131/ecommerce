@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {useGetMyOrderQuery, useUpdateOrderMutation } from '../api/order'
+import { useGetMyOrderQuery, useUpdateOrderMutation } from '../api/order'
 import Skeleton from 'react-loading-skeleton'
 import { Table } from 'antd'
 import Modal from '../components/modal'
@@ -25,21 +25,21 @@ const nameStatus = (number) => {
 }
 const MyOrder = () => {
 
-    const [isShowCart,setIsShowCart]=useState(false)
-    const onShowCart=()=>{
+    const [isShowCart, setIsShowCart] = useState(false)
+    const onShowCart = () => {
         setIsShowCart(true)
-      }
-      const onHiddenCart=()=>{
+    }
+    const onHiddenCart = () => {
         setIsShowCart(false)
-      }
-    const id=JSON.parse(localStorage.getItem('user'))?._id
-    const [userId,setUserId]=useState(id)
-    useEffect(()=>{
+    }
+    const [id,setId]=useState(JSON.parse(localStorage.getItem('user'))?._id)
+    const [userId, setUserId] = useState(id)
+    useEffect(() => {
         setUserId(id)
-    },[id])
+    }, [id])
     const [isModal, setIsModal] = useState(false)
     const [updateOrder] = useUpdateOrderMutation()
-    const {data:myOrders,isLoading}=useGetMyOrderQuery(userId)
+    const { data: myOrders, isLoading } = useGetMyOrderQuery(userId)
     const hiddenModal = () => {
         setIsModal(false)
     }
@@ -85,7 +85,7 @@ const MyOrder = () => {
                         setIsModal(true)
                         setOrderDetailId(item.key)
                     }} className="text-white text-lg w-9 h-8 rounded-full bg-red-400 flex items-center justify-center hover:bg-gray-800 transition"><i className="fas fa-eye" /></button>
-                    {item.status === 'Đang giao hàng' || item.status === 'Đã giao xong' || item.status === 'Đã hủy' || item.pay==='Đã thanh toán' ? '' : <button className='ml-2' onClick={async () => {
+                    {item.status === 'Đang giao hàng' || item.status === 'Đã giao xong' || item.status === 'Đã hủy' || item.pay === 'Đã thanh toán' ? '' : <button className='ml-2' onClick={async () => {
                         const { data: order } = await axios.get(`https://ecommerce-poly-be.onrender.com/api/orders/${item.key}`)
                         const orderUpdate = { ...order.data, pay: order.data.status === 2 ? true : order.data.pay }
                         const confirm = window.confirm(`Bạn có chắc chắn hủy đơn hàng`)
@@ -112,16 +112,18 @@ const MyOrder = () => {
     ];
     return (
         <>
-            <Header  onShowCart={onShowCart}/>
-           {userId? <div className='mx-10 my-10'>
+            <Header onShowCart={onShowCart} />
+            {userId ? <div className='mx-10 my-10'>
                 <div className='flex justify-between'>
                     <h1 className='font-bold text-2xl'>Quản lí đơn hàng của tôi</h1>
                 </div>
-                {isLoading ? <Skeleton className='mt-5' count={5} /> : <Table className='mt-10' dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />}
-                {isModal && <Modal hiddenModal={hiddenModal} orderDetailId={orderDetailId} />}
+                {myOrders?.data.length > 0 ? <>
+                    {isLoading ? <Skeleton className='mt-5' count={5} /> : <Table className='mt-10' dataSource={dataSource} columns={columns} pagination={{ pageSize: 4 }} />}
+                    {isModal && <Modal hiddenModal={hiddenModal} orderDetailId={orderDetailId} />}
+                </> : <h1 className='text-3xl mt-5 flex justify-center items-center'>Không có đơn hàng nào</h1>}
                 <Footer />
-            </div>:<h1>Bạn chưa đăng nhập</h1>}
-            {isShowCart && <Cart onHiddenCart={onHiddenCart}/>}
+            </div> : <h1>Bạn chưa đăng nhập</h1>}
+            {isShowCart && <Cart onHiddenCart={onHiddenCart} />}
         </>
     )
 }

@@ -1,9 +1,10 @@
 import { Button } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const Header = ({ onChangeSearch, onShowCart }) => {
+  const navigate=useNavigate()
   const { items } = useSelector(state => state.cart)
   const [isHide, setIsHide] = useState(false)
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
@@ -14,6 +15,8 @@ const Header = ({ onChangeSearch, onShowCart }) => {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     setUser()
+    navigate('/')
+    
   }
   const onSearch = (event) => {
     if (onChangeSearch) {

@@ -98,16 +98,16 @@ const CheckoutCartPage = () => {
             })
         }
     }
-    const [isShowCart,setIsShowCart]=useState(false)
-    const onShowCart=()=>{
+    const [isShowCart, setIsShowCart] = useState(false)
+    const onShowCart = () => {
         setIsShowCart(true)
-      }
-      const onHiddenCart=()=>{
+    }
+    const onHiddenCart = () => {
         setIsShowCart(false)
-      }
+    }
     return (
         <>
-            <Header onShowCart={onShowCart}/>
+            <Header onShowCart={onShowCart} />
             <Form onFinish={onFinish}>
                 <div className='grid grid-cols-2 gap-10 mx-10 my-10'>
                     <div className='mr-[50px]'>
@@ -156,15 +156,19 @@ const CheckoutCartPage = () => {
                             <h1 className='text-sm font-bold'>Total</h1>
                             <p className='text-lg text-gray-950'>$ {totalCart}</p>
                         </div>
-                        <div className='mt-5 flex'>
-                            <button onClick={payDelivery} className='w-1/2 py-2 bg-orange-400 mr-3 text-white font-bold rounded-[10px]'>{isLoading ? <GoSync className='animate-spin ml-[50%]' /> : 'Thanh toán khi nhận hàng'}</button>
+                        {isLoading ? <div className='flex justify-center items-center'><i
+                            className="fas fa-circle-notch fa-spin"
+                            style={{ fontSize: "50px", color: "gray" }}
+                        /></div> : <div className='mt-5 flex'>
+                            <button onClick={payDelivery} className='w-1/2 py-2 bg-orange-400 mr-3 text-white font-bold rounded-[10px]'>Thanh toán khi nhận hàng</button>
                             <button className='w-1/2 py-2 bg-orange-400 mr-3 text-white font-bold rounded-[10px]' onClick={payment}>Proceed to payment</button>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </Form>
             <Footer />
-            {isShowCart && <Cart onHiddenCart={onHiddenCart}/>}
+
+            {isShowCart && <Cart onHiddenCart={onHiddenCart} />}
         </>
     )
 }
