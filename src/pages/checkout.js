@@ -56,15 +56,13 @@ const CheckoutCartPage = () => {
                 Authorization: `Bearer ${token}`
             }
         })
-        //
         const dataOrder = await createOrder(order)
+        const stripe = await stripePromise
         if (dataOrder?.data?.data) {
             dispatch(clearCart())
         }
-        const stripe = await stripePromise
         await stripe.redirectToCheckout({ sessionId: data.id })
-
-
+        
     }
     const payDelivery = async () => {
         if (!info) {
