@@ -91,7 +91,7 @@ const OrderListAdmin = () => {
                             }
                         }
                     }} className="text-white text-lg w-9 h-8 rounded-full bg-red-400 flex items-center justify-center hover:bg-gray-800 transition ml-2"><i className="fa fa-arrow-up"></i></button>}
-                    {item.status==='Đang giao hàng' || item.status==='Đã giao xong' || item.status==='Đã hủy' || item.pay===true?'':<button className='ml-2' onClick={async () => {
+                    {item.status==='Đang giao hàng' || item.status==='Đã giao xong' || item.status==='Đã hủy' ||  item.pay === 'Đã thanh toán' ?'':<button className='ml-2' onClick={async () => {
                         const { data: order } = await axios.get(`https://ecommerce-poly-be.onrender.com/api/orders/${item.key}`)
                         const orderUpdate = { ...order.data, pay: order.data.status === 2 ? true : order.data.pay}
                         const confirm = window.confirm(`Bạn có chắc chắn hủy đơn hàng`)

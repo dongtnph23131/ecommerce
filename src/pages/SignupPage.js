@@ -42,7 +42,7 @@ const SignupPage = () => {
                 'success'
             )
             setTimeout(() => {
-                navagate('/')
+                navagate('/login')
             }, 1000)
         }
         else {
